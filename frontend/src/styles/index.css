@@ -1,0 +1,784 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================
+   NOVAÉ — DESIGN SYSTEM
+   ========================================================= */
+
+:root { 
+  --novae-bg: #F8FAFC;
+  --novae-paper: #FFFFFF;
+  --novae-surface: #FFFFFF;
+
+  --novae-ink: #0F172A;
+  --novae-gray: #64748B;
+
+  --novae-primary: #2563EB;
+  --novae-primary-dark: #1D4ED8;
+  --novae-primary-soft: #EFF6FF;
+
+  --novae-accent: #4F46E5;
+  --novae-accent-soft: #EEF2FF;
+
+  --novae-border: #E2E8F0;
+
+  --novae-sale: #DC2626;
+  --novae-success: #16A34A;
+  --novae-gold: #C5A46D;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--novae-bg);
+  color: var(--novae-ink);
+  font-family: "DM Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  outline-color: var(--novae-primary);
+}
+
+::selection {
+  background: var(--novae-primary);
+  color: #FFFFFF;
+}
+
+.font-display {
+  font-family: "Manrope", sans-serif;
+}
+
+/* =========================================================
+   COMPATIBILITÉ DES COULEURS NOVAÉ
+   ========================================================= */
+
+.bg-ink {
+  background-color: var(--novae-ink) !important;
+}
+
+.text-ink {
+  color: var(--novae-ink) !important;
+}
+
+.bg-paper {
+  background-color: var(--novae-paper) !important;
+}
+
+.text-paper {
+  color: var(--novae-paper) !important;
+}
+
+.bg-cream {
+  background-color: var(--novae-bg) !important;
+}
+
+.bg-surface {
+  background-color: var(--novae-surface) !important;
+}
+
+.text-gray {
+  color: var(--novae-gray) !important;
+}
+
+.text-accent {
+  color: var(--novae-primary) !important;
+}
+
+.bg-accent {
+  background-color: var(--novae-primary) !important;
+}
+
+.text-sale {
+  color: var(--novae-sale) !important;
+}
+
+.bg-sale {
+  background-color: var(--novae-sale) !important;
+}
+
+.border-line,
+.hairline {
+  border-color: var(--novae-border) !important;
+}
+
+/* =========================================================
+   BOUTONS
+   ========================================================= */
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  transition:
+    background-color .2s ease,
+    border-color .2s ease,
+    color .2s ease,
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+/* =========================================================
+   CARTES
+   ========================================================= */
+
+.novae-card {
+  background: #FFFFFF;
+  border: 1px solid var(--novae-border);
+  border-radius: 18px;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, .03),
+    0 8px 30px rgba(15, 23, 42, .04);
+}
+
+.novae-pill {
+  border: 1px solid var(--novae-border);
+  border-radius: 999px;
+  background: #FFFFFF;
+}
+
+.novae-link {
+  position: relative;
+}
+
+.novae-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: var(--novae-primary);
+  transition: transform .25s ease;
+}
+
+.novae-link:hover::after,
+.novae-link.active::after {
+  transform: scaleX(1);
+}
+
+/* =========================================================
+   GRILLE ET NOISE
+   ========================================================= */
+
+.novae-grid {
+  background-image:
+    linear-gradient(rgba(37, 99, 235, .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, .035) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.novae-noise {
+  position: relative;
+  isolation: isolate;
+}
+
+.novae-noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .035;
+  z-index: -1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+}
+
+/* =========================================================
+   ACCESSIBILITÉ
+   ========================================================= */
+
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--novae-primary);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--novae-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* =========================================================
+   NOVAÉ — DEEP BLACK ADMIN THEME
+   Le thème est limité à .novae-admin.
+   ========================================================= */
+
+html.dark .novae-admin {
+  --novae-bg: #05070D;
+  --novae-paper: #0B1120;
+  --novae-surface: #0B1120;
+
+  --novae-ink: #F8FAFC;
+  --novae-gray: #A1AFC2;
+
+  --novae-primary: #3B82F6;
+  --novae-primary-dark: #2563EB;
+  --novae-primary-soft: #172554;
+
+  --novae-accent: #818CF8;
+  --novae-accent-soft: #1E1B4B;
+
+  --novae-border: #263247;
+
+  --novae-sale: #F87171;
+  --novae-success: #4ADE80;
+  --novae-gold: #D6B77A;
+
+  color-scheme: dark;
+  background-color: #05070D;
+  color: #F8FAFC;
+}
+
+/* Fond principal */
+html.dark .novae-admin,
+html.dark .novae-admin main {
+  background-color: #05070D;
+  color: #F8FAFC;
+}
+
+/* Surfaces */
+html.dark .novae-admin .bg-surface,
+html.dark .novae-admin .bg-cream,
+html.dark .novae-admin .bg-slate-50,
+html.dark .novae-admin .bg-slate-100 {
+  background-color: #05070D !important;
+}
+
+html.dark .novae-admin .bg-paper,
+html.dark .novae-admin .bg-white {
+  background-color: #0B1120 !important;
+}
+
+html.dark .novae-admin .bg-slate-200 {
+  background-color: #1B263B !important;
+}
+
+/* Cartes */
+html.dark .novae-admin .novae-card,
+html.dark .novae-admin [class*="rounded-"][class*="border"] {
+  border-color: #263247;
+}
+
+html.dark .novae-admin .novae-card {
+  background-color: #0B1120;
+  color: #F8FAFC;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .25);
+}
+
+/* Textes */
+html.dark .novae-admin .text-ink,
+html.dark .novae-admin .text-slate-950,
+html.dark .novae-admin .text-slate-900,
+html.dark .novae-admin .text-slate-800,
+html.dark .novae-admin .text-slate-700 {
+  color: #F8FAFC !important;
+}
+
+html.dark .novae-admin .text-slate-600,
+html.dark .novae-admin .text-slate-500,
+html.dark .novae-admin .text-slate-400,
+html.dark .novae-admin .text-gray {
+  color: #A1AFC2 !important;
+}
+
+/* Bordures */
+html.dark .novae-admin .border-slate-50,
+html.dark .novae-admin .border-slate-100,
+html.dark .novae-admin .border-slate-200,
+html.dark .novae-admin .border-slate-300,
+html.dark .novae-admin .border-line {
+  border-color: #263247 !important;
+}
+
+/* Survols */
+html.dark .novae-admin .hover\:bg-slate-50:hover,
+html.dark .novae-admin .hover\:bg-slate-100:hover,
+html.dark .novae-admin .hover\:bg-white:hover {
+  background-color: #1B263B !important;
+}
+
+/* Champs */
+html.dark .novae-admin input,
+html.dark .novae-admin textarea,
+html.dark .novae-admin select {
+  background-color: #111827;
+  color: #F8FAFC;
+  border-color: #334155;
+}
+
+html.dark .novae-admin input::placeholder,
+html.dark .novae-admin textarea::placeholder {
+  color: #8291A8;
+}
+
+html.dark .novae-admin input:focus,
+html.dark .novae-admin textarea:focus,
+html.dark .novae-admin select:focus {
+  border-color: #3B82F6;
+}
+
+/* Tableaux */
+html.dark .novae-admin table {
+  color: #F8FAFC;
+}
+
+html.dark .novae-admin thead {
+  background-color: #111827;
+}
+
+html.dark .novae-admin tbody tr {
+  border-color: #263247;
+}
+
+html.dark .novae-admin tbody tr:hover {
+  background-color: #111827;
+}
+
+/* Modales */
+html.dark .novae-admin [role="dialog"] {
+  background-color: #0B1120;
+  color: #F8FAFC;
+  border-color: #263247;
+}
+
+/* Graphiques Recharts */
+html.dark .novae-admin .recharts-cartesian-grid-horizontal line,
+html.dark .novae-admin .recharts-cartesian-grid-vertical line {
+  stroke: #263247;
+}
+
+html.dark .novae-admin .recharts-text {
+  fill: #A1AFC2;
+}
+
+html.dark .novae-admin .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: #111827 !important;
+  border: 1px solid #334155 !important;
+  border-radius: 12px;
+  color: #F8FAFC;
+}
+
+html.dark .novae-admin .recharts-tooltip-item,
+html.dark .novae-admin .recharts-tooltip-label {
+  color: #F8FAFC !important;
+}
+
+/* Scrollbar admin */
+html.dark .novae-admin ::-webkit-scrollbar-track {
+  background: #05070D;
+}
+
+html.dark .novae-admin ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+html.dark .novae-admin ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Transition */
+.novae-admin,
+.novae-admin main {
+  transition: background-color .25s ease, color .25s ease;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+}
+
+/* =========================================================
+   MOUVEMENTS RÉDUITS
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =========================================================
+   CORRECTION SIDEBAR — NOVAÉ DEEP BLACK
+   ========================================================= */
+
+html.dark .novae-admin aside.bg-ink,
+html.dark .novae-admin aside .bg-ink {
+  background-color: #080D18 !important;
+  color: #F8FAFC !important;
+}
+
+/* Identité NOVAÉ */
+html.dark .novae-admin aside .text-white {
+  color: #F8FAFC !important;
+}
+
+/* Navigation inactive */
+html.dark .novae-admin aside nav a:not(.active) {
+  color: #A1AFC2 !important;
+}
+
+/* Navigation active */
+html.dark .novae-admin aside nav a[aria-current="page"] {
+  background-color: #17243A !important;
+  color: #FFFFFF !important;
+}
+
+/* Icônes et boutons de navigation */
+html.dark .novae-admin aside nav a span {
+  border-color: #263247;
+}
+
+/* Séparateurs */
+html.dark .novae-admin aside .border-white\/10 {
+  border-color: #263247 !important;
+}
+
+/* Bloc de session */
+html.dark .novae-admin aside .bg-white\/\[0\.04\] {
+  background-color: #111827 !important;
+  border-color: #334155 !important;
+}
+
+/* Bouton du thème */
+html.dark .novae-admin aside button:hover,
+html.dark .novae-admin aside a:hover {
+  background-color: #17243A;
+}
+
+/* =========================================================
+   NOVAÉ — DEEP BLACK : CORRECTION DES ÉLÉMENTS PRODUITS
+   ========================================================= */
+
+html.dark {
+  --novae-bg: #05070D;
+  --novae-paper: #0B1020;
+  --novae-surface: #101827;
+  --novae-border: #263449;
+  --novae-ink: #F8FAFC;
+  --novae-gray: #A3B1C6;
+}
+
+/* Fonds clairs */
+html.dark .bg-slate-50,
+html.dark .bg-slate-50\/70,
+html.dark .bg-slate-100 {
+  background-color: #111827 !important;
+}
+
+html.dark .bg-white {
+  background-color: #0B1020 !important;
+}
+
+/* Textes */
+html.dark .text-slate-950,
+html.dark .text-slate-900,
+html.dark .text-slate-800 {
+  color: #F8FAFC !important;
+}
+
+html.dark .text-slate-700 {
+  color: #D5DEEA !important;
+}
+
+html.dark .text-slate-600 {
+  color: #B8C5D8 !important;
+}
+
+html.dark .text-slate-500,
+html.dark .text-slate-400 {
+  color: #91A0B5 !important;
+}
+
+/* Bordures et séparateurs */
+html.dark .border-slate-100,
+html.dark .border-slate-200,
+html.dark .border-slate-300 {
+  border-color: #263449 !important;
+}
+
+html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #263449 !important;
+}
+
+/* Survols */
+html.dark .hover\:bg-slate-50:hover,
+html.dark .hover\:bg-slate-50\/70:hover {
+  background-color: #172238 !important;
+}
+
+/* Images et emplacements vides */
+html.dark .bg-slate-50 {
+  background-color: #111827 !important;
+}
+
+/* Badges bleus */
+html.dark .bg-blue-50 {
+  background-color: #142746 !important;
+}
+
+html.dark .text-blue-600 {
+  color: #60A5FA !important;
+}
+
+/* Badges indigo */
+html.dark .bg-indigo-50 {
+  background-color: #242044 !important;
+}
+
+html.dark .text-indigo-600 {
+  color: #A5B4FC !important;
+}
+
+/* Badges verts */
+html.dark .bg-emerald-50 {
+  background-color: #102D27 !important;
+}
+
+html.dark .text-emerald-600 {
+  color: #4ADE80 !important;
+}
+
+/* Badges orange */
+html.dark .bg-amber-50 {
+  background-color: #302411 !important;
+}
+
+html.dark .text-amber-600,
+html.dark .text-amber-700 {
+  color: #FBBF24 !important;
+}
+
+html.dark .text-amber-900 {
+  color: #FDE68A !important;
+}
+
+/* Badges rouges */
+html.dark .bg-red-50 {
+  background-color: #35191F !important;
+}
+
+html.dark .text-red-600 {
+  color: #F87171 !important;
+}
+
+/* Boutons de formulaire */
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: #111827 !important;
+  color: #F8FAFC !important;
+  border-color: #334155 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #8291A8 !important;
+}
+
+html.dark option {
+  background-color: #0B1020;
+  color: #F8FAFC;
+}
+
+/* Alertes de stock */
+html.dark .border-amber-200 {
+  border-color: #72521C !important;
+}
+
+/* Toasts */
+html.dark .border-emerald-200 {
+  border-color: #176044 !important;
+}
+
+html.dark .border-red-200 {
+  border-color: #7F2935 !important;
+}
+
+/* =========================================================
+   NOVAÉ — ADMIN DASHBOARD DARK MODE
+   ========================================================= */
+
+html.dark .admin-dashboard {   
+  color: #e2e8f0;
+}
+
+html.dark .admin-dashboard .bg-white {
+  background-color: #111827 !important;
+}
+
+html.dark .admin-dashboard .bg-slate-50 {
+  background-color: #1e293b !important;
+}
+
+html.dark .admin-dashboard .bg-slate-100 {
+  background-color: #273449 !important;
+}
+
+html.dark .admin-dashboard .border-slate-200,
+html.dark .admin-dashboard .border-slate-100 {
+  border-color: #334155 !important;
+}
+
+html.dark .admin-dashboard .divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #334155 !important;
+}
+
+html.dark .admin-dashboard .text-slate-950,
+html.dark .admin-dashboard .text-slate-900,
+html.dark .admin-dashboard .text-slate-800 {
+  color: #f1f5f9 !important;
+}
+
+html.dark .admin-dashboard .text-slate-700,
+html.dark .admin-dashboard .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .admin-dashboard .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+html.dark .admin-dashboard .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+html.dark .admin-dashboard .hover\:bg-slate-50:hover {
+  background-color: #1e293b !important;
+}
+
+html.dark .admin-dashboard .bg-blue-50 {
+  background-color: #172554 !important;
+}
+
+html.dark .admin-dashboard .bg-indigo-50 {
+  background-color: #1e1b4b !important;
+}
+
+html.dark .admin-dashboard .bg-violet-50 {
+  background-color: #2e1065 !important;
+}
+
+html.dark .admin-dashboard .bg-emerald-50 {
+  background-color: #064e3b !important;
+}
+
+html.dark .admin-dashboard .bg-amber-50 {
+  background-color: #451a03 !important;
+}
+
+html.dark .admin-dashboard .bg-red-50 {
+  background-color: #450a0a !important;
+}
+
+html.dark .admin-dashboard .text-amber-900 {
+  color: #fde68a !important;
+}
+
+html.dark .admin-dashboard .text-amber-700,
+html.dark .admin-dashboard .text-amber-600 {
+  color: #fbbf24 !important;
+}
+
+html.dark .admin-dashboard .text-red-700,
+html.dark .admin-dashboard .text-red-600 {
+  color: #fca5a5 !important;
+}
+
+html.dark .admin-dashboard .text-blue-800,
+html.dark .admin-dashboard .text-blue-700 {
+  color: #93c5fd !important;
+}
+
+html.dark .admin-dashboard .border-amber-100 {
+  border-color: #78350f !important;
+}
+
+html.dark .admin-dashboard .border-red-100 {
+  border-color: #7f1d1d !important;
+}
+
+html.dark .admin-dashboard input,
+html.dark .admin-dashboard select,
+html.dark .admin-dashboard textarea {
+  background-color: #1e293b;
+  color: #f1f5f9;
+  border-color: #475569;
+}
+
+html.dark .admin-dashboard .animate-pulse {
+  background-color: #273449;
+}
+
+/* Graphiques */
+html.dark .admin-dashboard .recharts-cartesian-grid line {
+  stroke: #334155;
+}
+
+html.dark .admin-dashboard .recharts-text {
+  fill: #94a3b8;
+}
+
+/* Top 5 des ventes */
+html.dark .admin-dashboard-top5 {
+  background-color: #111827;
+  border-color: #334155;
+}
+
+html.dark .admin-dashboard-top5 article {
+  background-color: #111827;
+  border-color: #334155;
+}
+
+html.dark .admin-dashboard-top5 article .bg-slate-50 {
+  background-color: #1e293b !important;
+}
+
+html.dark .admin-dashboard-top5 article .bg-blue-50\/70 {
+  background-color: #172554 !important;
+}
+
+html.dark .admin-dashboard-top5 article .text-slate-900 {
+  color: #f1f5f9 !important;
+}
+
+html.dark .admin-dashboard-top5 .border-slate-100,
+html.dark .admin-dashboard-top5 .border-slate-200 {
+  border-color: #334155 !important;
+}

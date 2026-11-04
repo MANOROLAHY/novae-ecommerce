@@ -1,0 +1,29 @@
+# Dépendances
+node_modules/
+
+# Builds
+dist/
+
+# Secrets et variables d'environnement
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# Bases de données locales
+backend/db/*.db
+backend/db/*.db-shm
+backend/db/*.db-wal
+
+# Couverture des tests
+coverage/
+
+# Fichiers système
+.DS_Store
+
+# Sauvegardes locales du frontend
+frontend/backup-*/
+*.backup*

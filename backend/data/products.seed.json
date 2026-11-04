@@ -1,0 +1,380 @@
+[
+  {
+    "id": "p001",
+    "ref": "MA-0114",
+    "name": "Manteau en laine Double-Face",
+    "category": "Mode",
+    "subcategory": "Manteaux",
+    "price": 1290,
+    "currency": "EUR",
+    "description": "Manteau façonné en laine double-face italienne, coupe épurée et doublure en cupro. Fermeture par boutons en corne naturelle.",
+    "details": [
+      "100% laine mérinos",
+      "Doublure cupro",
+      "Fabriqué en Italie",
+      "Entretien: nettoyage à sec"
+    ],
+    "colors": [
+      "Camel",
+      "Noir profond"
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "stock": 14,
+    "image": "coat",
+    "featured": true,
+    "isNew": true,
+    "rating": 4.6,
+    "reviewCount": 30,
+    "compareAtPrice": 1627
+  },
+  {
+    "id": "p002",
+    "ref": "MA-0227",
+    "name": "Sac Cabas en Cuir Grainé",
+    "category": "Mode",
+    "subcategory": "Maroquinerie",
+    "price": 2450,
+    "currency": "EUR",
+    "description": "Sac cabas façonné à la main en cuir de veau grainé, structure rigide et fermoir laiton brossé.",
+    "details": [
+      "Cuir de veau pleine fleur",
+      "Ferrures laiton brossé",
+      "Intérieur en daim",
+      "Fait main en France"
+    ],
+    "colors": [
+      "Cognac",
+      "Noir"
+    ],
+    "sizes": [
+      "Unique"
+    ],
+    "stock": 6,
+    "image": "bag",
+    "featured": true,
+    "isNew": false,
+    "rating": 4.3,
+    "reviewCount": 89,
+    "compareAtPrice": null
+  },
+  {
+    "id": "p003",
+    "ref": "MA-0339",
+    "name": "Chemise en Soie Sablée",
+    "category": "Mode",
+    "subcategory": "Chemises",
+    "price": 420,
+    "currency": "EUR",
+    "description": "Chemise fluide en soie sablée, col officier et boutonnage nacre. Une pièce intemporelle pour le jour comme le soir.",
+    "details": [
+      "100% soie sablée",
+      "Boutons en nacre",
+      "Coupe fluide",
+      "Lavage à la main"
+    ],
+    "colors": [
+      "Ivoire",
+      "Vert olive"
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L"
+    ],
+    "stock": 22,
+    "image": "shirt",
+    "featured": false,
+    "isNew": true,
+    "rating": 4.7,
+    "reviewCount": 297,
+    "compareAtPrice": null
+  },
+  {
+    "id": "p004",
+    "ref": "MA-0442",
+    "name": "Mocassins en Cuir Patiné",
+    "category": "Mode",
+    "subcategory": "Chaussures",
+    "price": 690,
+    "currency": "EUR",
+    "description": "Mocassins cousus main, cuir patiné à la cire d'abeille et semelle en cuir cousu Blake.",
+    "details": [
+      "Cuir de veau patiné",
+      "Semelle cuir cousue Blake",
+      "Fabriqué au Portugal"
+    ],
+    "colors": [
+      "Marron patiné",
+      "Noir"
+    ],
+    "sizes": [
+      "39",
+      "40",
+      "41",
+      "42",
+      "43",
+      "44"
+    ],
+    "stock": 18,
+    "image": "shoes",
+    "featured": true,
+    "isNew": false,
+    "rating": 4.2,
+    "reviewCount": 234,
+    "compareAtPrice": null
+  },
+  {
+    "id": "p005",
+    "ref": "TE-1102",
+    "name": "Casque Audio Sans Fil Titane",
+    "category": "Électronique",
+    "subcategory": "Audio",
+    "price": 890,
+    "currency": "EUR",
+    "description": "Casque circum-aural en aluminium anodisé et coussinets en cuir d'agneau. Réduction de bruit adaptative et autonomie de 40 heures.",
+    "details": [
+      "Réduction de bruit active",
+      "Autonomie 40h",
+      "Coussinets cuir d'agneau",
+      "Bluetooth 5.3"
+    ],
+    "colors": [
+      "Titane",
+      "Noir mat"
+    ],
+    "sizes": [
+      "Unique"
+    ],
+    "stock": 31,
+    "image": "headphones",
+    "featured": true,
+    "isNew": true,
+    "rating": 4.1,
+    "reviewCount": 65,
+    "compareAtPrice": 1053
+  },
+  {
+    "id": "p006",
+    "ref": "TE-1215",
+    "name": "Montre Connectée Édition Saphir",
+    "category": "Électronique",
+    "subcategory": "Montres",
+    "price": 1150,
+    "currency": "EUR",
+    "description": "Boîtier en titane grade 5, verre saphir anti-rayures et bracelet interchangeable en cuir tressé.",
+    "details": [
+      "Boîtier titane grade 5",
+      "Verre saphir",
+      "Étanche 50m",
+      "Autonomie 6 jours"
+    ],
+    "colors": [
+      "Titane naturel",
+      "Noir sablé"
+    ],
+    "sizes": [
+      "40mm",
+      "44mm"
+    ],
+    "stock": 12,
+    "image": "watch",
+    "featured": true,
+    "isNew": true,
+    "rating": 4.5,
+    "reviewCount": 31,
+    "compareAtPrice": null
+  },
+  {
+    "id": "p007",
+    "ref": "TE-1328",
+    "name": "Enceinte Portable Chêne & Aluminium",
+    "category": "Électronique",
+    "subcategory": "Audio",
+    "price": 540,
+    "currency": "EUR",
+    "description": "Enceinte façonnée en chêne massif et grille en aluminium brossé. Son à 360° et charge sans fil intégrée.",
+    "details": [
+      "Bois de chêne massif",
+      "Son 360°",
+      "Charge à induction",
+      "Autonomie 20h"
+    ],
+    "colors": [
+      "Chêne clair",
+      "Chêne fumé"
+    ],
+    "sizes": [
+      "Unique"
+    ],
+    "stock": 25,
+    "image": "speaker",
+    "featured": false,
+    "isNew": false,
+    "rating": 4.5,
+    "reviewCount": 297,
+    "compareAtPrice": null
+  },
+  {
+    "id": "p008",
+    "ref": "TE-1441",
+    "name": "Ordinateur Portable Édition Signature",
+    "category": "Électronique",
+    "subcategory": "Informatique",
+    "price": 2890,
+    "currency": "EUR",
+    "description": "Châssis usiné dans un bloc d'aluminium, écran micro-LED 14 pouces et clavier rétroéclairé à frappe silencieuse.",
+    "details": [
+      "Écran micro-LED 14\"",
+      "32Go RAM / 1To SSD",
+      "Châssis aluminium usiné CNC",
+      "Autonomie 18h"
+    ],
+    "colors": [
+      "Gris sidéral",
+      "Argent"
+    ],
+    "sizes": [
+      "Unique"
+    ],
+    "stock": 9,
+    "image": "laptop",
+    "featured": true,
+    "isNew": true,
+    "rating": 4.4,
+    "reviewCount": 247,
+    "compareAtPrice": 3579
+  },
+  {
+    "id": "p009",
+    "ref": "MA-0556",
+    "name": "Pantalon en Flanelle",
+    "category": "Mode",
+    "subcategory": "Pantalons",
+    "price": 380,
+    "currency": "EUR",
+    "description": "Pantalon à pinces en flanelle de laine, taille haute et coupe droite affinée.",
+    "details": [
+      "100% laine flanelle",
+      "Taille haute",
+      "Coupe droite",
+      "Fabriqué en Italie"
+    ],
+    "colors": [
+      "Gris anthracite",
+      "Marine"
+    ],
+    "sizes": [
+      "36",
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "stock": 27,
+    "image": "trousers",
+    "featured": false,
+    "isNew": false,
+    "rating": 4.7,
+    "reviewCount": 21,
+    "compareAtPrice": null
+  },
+  {
+    "id": "p010",
+    "ref": "MA-0663",
+    "name": "Écharpe en Cachemire",
+    "category": "Mode",
+    "subcategory": "Accessoires",
+    "price": 310,
+    "currency": "EUR",
+    "description": "Écharpe tissée en cachemire pur, finition frangée et tissage serré pour une chaleur incomparable.",
+    "details": [
+      "100% cachemire",
+      "Tissage serré",
+      "180 x 70 cm",
+      "Fabriqué en Écosse"
+    ],
+    "colors": [
+      "Beige naturel",
+      "Bordeaux"
+    ],
+    "sizes": [
+      "Unique"
+    ],
+    "stock": 40,
+    "image": "scarf",
+    "featured": false,
+    "isNew": true,
+    "rating": 4.7,
+    "reviewCount": 99,
+    "compareAtPrice": 389
+  },
+  {
+    "id": "p011",
+    "ref": "TE-1554",
+    "name": "Appareil Photo Compact Édition Voyage",
+    "category": "Électronique",
+    "subcategory": "Photo",
+    "price": 1680,
+    "currency": "EUR",
+    "description": "Boîtier compact en magnésium, capteur plein format et objectif fixe 35mm f/1.8 en verre optique premium.",
+    "details": [
+      "Capteur plein format 24MP",
+      "Objectif fixe 35mm f/1.8",
+      "Boîtier magnésium",
+      "Vidéo 4K60"
+    ],
+    "colors": [
+      "Noir",
+      "Argent vintage"
+    ],
+    "sizes": [
+      "Unique"
+    ],
+    "stock": 11,
+    "image": "camera",
+    "featured": false,
+    "isNew": false,
+    "rating": 4.4,
+    "reviewCount": 97,
+    "compareAtPrice": null
+  },
+  {
+    "id": "p012",
+    "ref": "MA-0778",
+    "name": "Ceinture Réversible en Cuir",
+    "category": "Mode",
+    "subcategory": "Accessoires",
+    "price": 175,
+    "currency": "EUR",
+    "description": "Ceinture réversible cuir lisse et cuir grainé, boucle amovible en laiton brossé.",
+    "details": [
+      "Cuir pleine fleur réversible",
+      "Boucle amovible",
+      "Fabriqué en France"
+    ],
+    "colors": [
+      "Noir/Marron"
+    ],
+    "sizes": [
+      "85",
+      "90",
+      "95",
+      "100",
+      "105"
+    ],
+    "stock": 33,
+    "image": "belt",
+    "featured": false,
+    "isNew": false,
+    "rating": 4.3,
+    "reviewCount": 190,
+    "compareAtPrice": null
+  }
+]
