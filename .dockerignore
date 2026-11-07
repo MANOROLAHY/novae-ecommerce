@@ -1,0 +1,27 @@
+# Dépôt Git
+.git
+.github
+
+# Dépendances
+**/node_modules
+
+# Fichiers de compilation
+**/dist
+**/coverage
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Bases SQLite
+backend/db/*.db
+backend/db/*.db-shm
+backend/db/*.db-wal
+
+# Images téléversées
+backend/uploads/
+
+# Logs
+**/*.log
+npm-debug.log*

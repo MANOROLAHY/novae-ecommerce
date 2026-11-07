@@ -27,3 +27,9 @@ coverage/
 # Sauvegardes locales du frontend
 frontend/backup-*/
 *.backup*
+
+# Images téléversées
+backend/uploads/
+
+# Sauvegardes locales
+sauvegardes/
