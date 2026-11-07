@@ -7,10 +7,11 @@
   "engines": {
     "node": ">=22.5.0"
   },
- "scripts": {
-  "start": "node --env-file=../.env --experimental-sqlite server.js",
-  "dev": "node --env-file=../.env --experimental-sqlite --watch server.js"
-},
+  "scripts": {
+    "start": "node --env-file=../.env --experimental-sqlite server.js",
+    "dev": "node --env-file=../.env --experimental-sqlite --watch server.js",
+    "test": "node --experimental-sqlite --test tests/*.test.js"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",

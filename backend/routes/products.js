@@ -14,7 +14,7 @@ const router = Router();
    CONFIGURATION UPLOAD DES IMAGES PRODUITS
    ========================================================= */
 
-const uploadDir = path.resolve("uploads/products");
+const uploadDir = process.env.UPLOAD_DIR || path.resolve("uploads/products");
 
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });

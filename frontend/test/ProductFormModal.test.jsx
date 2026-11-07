@@ -17,9 +17,7 @@ describe("ProductFormModal - creation", () => {
     await user.type(screen.getByLabelText(/Nom du produit/i), "Chapeau");
     await user.type(screen.getByLabelText(/^Catégorie \*/i), "Mode");
     await user.type(screen.getByLabelText(/^Sous-catégorie \*/i), "Accessoires");
-    await user.type(screen.getByLabelText(/^Prix \(€\)/i), "150");
-
-    console.log("--- Avant clic sur Créer le produit ---");
+    await user.type(screen.getByLabelText(/^Prix \*/i), "150");
     const submitBtn = screen.getByRole("button", { name: /Créer le produit/i });
     await user.click(submitBtn);
 
