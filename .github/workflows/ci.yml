@@ -1,0 +1,46 @@
+name: NOVAE CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Tests backend et frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupérer le code source
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Installer les dépendances backend
+        run: npm ci
+        working-directory: backend
+
+      - name: Exécuter les tests backend
+        run: npm test
+        working-directory: backend
+
+      - name: Installer les dépendances frontend
+        run: npm ci
+        working-directory: frontend
+
+      - name: Exécuter les tests frontend
+        run: npm test
+        working-directory: frontend
+
+      - name: Compiler le frontend
+        run: npm run build
+        working-directory: frontend
