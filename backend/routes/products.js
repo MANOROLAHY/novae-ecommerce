@@ -3,12 +3,14 @@ import { v4 as uuidv4 } from "uuid";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import { trace, SpanStatusCode } from "@opentelemetry/api";
 
 import { db } from "../db/database.js";
 import { rowToProduct } from "../db/mappers.js";
 import { requireAdmin } from "../middleware/adminAuth.js";
 
 const router = Router();
+const tracer = trace.getTracer("novae-backend");
 
 /* =========================================================
    CONFIGURATION UPLOAD DES IMAGES PRODUITS
@@ -102,7 +104,31 @@ router.get("/", (req, res) => {
     sql += " ORDER BY name ASC";
   }
 
-  const rows = db.prepare(sql).all(...params);
+  const rows = tracer.startActiveSpan(
+  "sqlite SELECT products",
+  (span) => {
+    try {
+      const result = db.prepare(sql).all(...params);
+
+      span.setAttribute("db.system", "sqlite");
+      span.setAttribute("db.operation", "SELECT");
+      span.setAttribute("db.sql.table", "products");
+      span.setAttribute("db.rows_returned", result.length);
+
+      return result;
+    } catch (error) {
+      span.recordException(error);
+      span.setStatus({
+        code: SpanStatusCode.ERROR,
+        message: error.message,
+      });
+
+      throw error;
+    } finally {
+      span.end();
+    }
+  }
+);
 
   res.json(rows.map(rowToProduct));
 });
