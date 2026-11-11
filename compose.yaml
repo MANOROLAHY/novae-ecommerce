@@ -4,7 +4,7 @@ services:
   # BACKEND : NODE.JS + EXPRESS + SQLITE
   # ==========================================
   backend:
-    image: honoralien/novae-backend:sha-fc215ce8737791c28b01b0025f43c9de0e582ce5
+    image: honoralien/novae-backend:sha-93857fb5a518c6baa1b9478be22b41ff32907b8e
     pull_policy: always
 
     container_name: novae-backend
@@ -49,7 +49,7 @@ services:
   # FRONTEND : REACT + NGINX
   # ==========================================
   frontend:
-    image: honoralien/novae-frontend:sha-fc215ce8737791c28b01b0025f43c9de0e582ce5
+    image: honoralien/novae-frontend:sha-93857fb5a518c6baa1b9478be22b41ff32907b8e
     pull_policy: always
 
     container_name: novae-frontend
