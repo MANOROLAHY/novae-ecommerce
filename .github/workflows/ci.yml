@@ -74,6 +74,12 @@ jobs:
       - name: Récupérer le code source
         uses: actions/checkout@v4
 
+      - name: Préparer les métadonnées de construction
+        id: buildmeta
+        run: |
+          echo "created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+          echo "version=0.0.0-dev.${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
+
       - name: Configurer Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -95,6 +101,13 @@ jobs:
           tags: |
             honoralien/novae-backend:latest
             honoralien/novae-backend:sha-${{ github.sha }}
+          labels: |
+            org.opencontainers.image.title=NOVAE Backend
+            org.opencontainers.image.description=API backend de la plateforme e-commerce NOVAE
+            org.opencontainers.image.source=https://github.com/MANOROLAHY/novae-ecommerce
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.created=${{ steps.buildmeta.outputs.created }}
+            org.opencontainers.image.version=${{ steps.buildmeta.outputs.version }}
 
       # ======================================
       # IMAGE FRONTEND
@@ -108,3 +121,10 @@ jobs:
           tags: |
             honoralien/novae-frontend:latest
             honoralien/novae-frontend:sha-${{ github.sha }}
+          labels: |
+            org.opencontainers.image.title=NOVAE Frontend
+            org.opencontainers.image.description=Interface frontend de la plateforme e-commerce NOVAE
+            org.opencontainers.image.source=https://github.com/MANOROLAHY/novae-ecommerce
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.created=${{ steps.buildmeta.outputs.created }}
+            org.opencontainers.image.version=${{ steps.buildmeta.outputs.version }}
