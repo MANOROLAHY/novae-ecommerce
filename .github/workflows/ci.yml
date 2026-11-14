@@ -98,6 +98,7 @@ jobs:
           context: .
           file: ./backend/Dockerfile
           push: true
+          sbom: true
           tags: |
             honoralien/novae-backend:latest
             honoralien/novae-backend:sha-${{ github.sha }}
@@ -118,6 +119,7 @@ jobs:
           context: .
           file: ./frontend/Dockerfile
           push: true
+          sbom: true
           tags: |
             honoralien/novae-frontend:latest
             honoralien/novae-frontend:sha-${{ github.sha }}
