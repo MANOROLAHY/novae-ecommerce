@@ -12,7 +12,9 @@ export function seedIfEmpty() {
     return;
   }
 
-  const seedPath = path.join(__dirname, "..", "data", "products.seed.json");
+    const seedPath =
+    process.env.SEED_FILE ||
+    path.join(__dirname, "..", "data", "products.seed.json");
   const products = JSON.parse(fs.readFileSync(seedPath, "utf-8"));
 
   const insert = db.prepare(`

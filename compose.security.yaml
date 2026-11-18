@@ -1,0 +1,78 @@
+services:
+  backend:
+    image: novae-backend:security-update
+    command: ["sh", "-c", "umask 077 && umask > /tmp/backend-umask.txt && exec node --experimental-sqlite server.js"]
+    container_name: novae-security-backend
+    restart: unless-stopped
+
+    env_file:
+      - /tmp/novae-compose-security/backend.env
+
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      SQLITE_DB_PATH: /app/data/luxe.db
+      UPLOAD_DIR: /app/uploads/products
+
+    read_only: true
+    user: "1000:1000"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=128m,uid=1000,gid=1000
+
+    volumes:
+      - /tmp/novae-compose-security/data:/app/data
+      - /tmp/novae-compose-security/uploads:/app/uploads
+
+    expose:
+      - "4000"
+
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:4000/api/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+    networks:
+      - novae-security-network
+
+  frontend:
+    image: honoralien/novae-frontend:sha-93857fb5a518c6baa1b9478be22b41ff32907b8e
+    container_name: novae-security-frontend
+    restart: unless-stopped
+
+    read_only: true
+    user: "101:101"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m,uid=101,gid=101
+
+    volumes:
+      - ./frontend/nginx.security.conf:/etc/nginx/nginx.conf:ro
+
+    ports:
+      - "127.0.0.1:8081:8080"
+
+    depends_on:
+      backend:
+        condition: service_healthy
+
+    networks:
+      - novae-security-network
+
+networks:
+  novae-security-network:
+    driver: bridge

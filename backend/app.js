@@ -45,4 +45,22 @@ app.use((req, res) => {
   });
 });
 
+// Gestion globale des erreurs
+app.use((err, _req, res, _next) => {
+  console.error("Erreur interne du serveur :", err);
+
+  const status = Number.isInteger(err.status) &&
+    err.status >= 400 &&
+    err.status < 500
+    ? err.status
+    : 500;
+
+  return res.status(status).json({
+    error:
+      status === 500
+        ? "Une erreur interne est survenue."
+        : err.message || "Requête invalide.",
+  });
+});
+
 export default app;

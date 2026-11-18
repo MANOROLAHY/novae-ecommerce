@@ -3,9 +3,11 @@ import assert from "node:assert/strict";
 
 import {
   mkdtempSync,
+  mkdirSync,
   rmSync,
   writeFileSync,
   existsSync,
+  readFileSync,
 } from "node:fs";
 
 import { tmpdir } from "node:os";
@@ -44,6 +46,16 @@ async function request(route, options = {}) {
   return fetch(`${baseUrl}${route}`, options);
 }
 
+// Image PNG réelle utilisée par les tests d'upload.
+const validPngBytes = readFileSync(
+  new URL("./fixtures/valid.png", import.meta.url)
+);
+
+function createValidPng() {
+  return new Blob([validPngBytes], {
+    type: "image/png",
+  });
+}
 // --------------------------------------------------
 // PRODUIT FICTIF
 // --------------------------------------------------
@@ -512,6 +524,60 @@ test("POST /api/products/:id/image : refuser un format de fichier non autorisé"
   );
 });
 
+test("POST /api/products/:id/image : refuser un faux PNG", async () => {
+  const form = new FormData();
+
+  const fakePng = new Blob(
+    ["Ce fichier est du texte, pas une image PNG."],
+    { type: "image/png" }
+  );
+
+  form.append("image", fakePng, "faux.png");
+
+  const response = await request(`/api/products/${managedProductId}/image`, {
+    method: "POST",
+    headers: {
+      "x-admin-token": adminToken,
+    },
+    body: form,
+  });
+
+  const data = await response.json();
+
+  assert.equal(response.status, 400);
+  assert.equal(
+    data.error,
+    "Fichier invalide. Seules les véritables images JPG, PNG et WEBP sont autorisées."
+  );
+});
+
+test("POST /api/products/:id/image : refuser un MIME incohérent", async () => {
+  const form = new FormData();
+
+  const pngWithWrongMime = new Blob(
+    [validPngBytes],
+    { type: "image/jpeg" }
+  );
+
+  form.append("image", pngWithWrongMime, "image.jpg");
+
+  const response = await request(`/api/products/${managedProductId}/image`, {
+    method: "POST",
+    headers: {
+      "x-admin-token": adminToken,
+    },
+    body: form,
+  });
+
+  const data = await response.json();
+
+  assert.equal(response.status, 400);
+  assert.equal(
+    data.error,
+    "Fichier invalide. Seules les véritables images JPG, PNG et WEBP sont autorisées."
+  );
+});
+
 test("POST /api/products/:id/image : refuser une image dépassant 5 Mo", async () => {
   const form = new FormData();
 
@@ -534,7 +600,7 @@ test("POST /api/products/:id/image : refuser une image dépassant 5 Mo", async (
 
   const data = await response.json();
 
-  assert.equal(response.status, 400);
+  assert.equal(response.status, 413);
   assert.equal(
     data.error,
     "L'image est trop grande. Taille maximale : 5 Mo."
@@ -544,10 +610,7 @@ test("POST /api/products/:id/image : refuser une image dépassant 5 Mo", async (
 test("POST /api/products/:id/image : refuser un champ de fichier inattendu", async () => {
   const form = new FormData();
 
-  const image = new Blob(
-    [new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10])],
-    { type: "image/png" }
-  );
+  const image = createValidPng();
 
   // Le champ "photo" est inattendu : le serveur attend "image".
   form.append("photo", image, "test.png");
@@ -569,13 +632,7 @@ test("POST /api/products/:id/image : refuser un champ de fichier inattendu", asy
 test("POST /api/products/:id/image : accepter une image PNG valide", async () => {
   const form = new FormData();
 
-  const pngBytes = new Uint8Array([
-    137, 80, 78, 71, 13, 10, 26, 10,
-  ]);
-
-  const image = new Blob([pngBytes], {
-    type: "image/png",
-  });
+  const image = createValidPng();
 
   form.append("image", image, "test.png");
 
@@ -609,10 +666,7 @@ test("POST /api/products/:id/image : supprimer l'ancienne image lors du remplace
 
   const form = new FormData();
 
-  const image = new Blob(
-    [new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10])],
-    { type: "image/png" }
-  );
+  const image = createValidPng();
 
   form.append("image", image, "nouvelle-image.png");
 
@@ -632,13 +686,42 @@ test("POST /api/products/:id/image : supprimer l'ancienne image lors du remplace
   assert.match(data.product.image, /^\/uploads\/products\/.+\.png$/);
 });
 
+test("POST /api/products/:id/image : continuer si la suppression de l'ancienne image échoue", async () => {
+  const oldFilename = "ancienne-image-dossier-test.png";
+  const oldPath = path.join(process.env.UPLOAD_DIR, oldFilename);
+
+  mkdirSync(oldPath);
+
+  db.prepare(
+    "UPDATE products SET image = ? WHERE id = ?"
+  ).run(`/uploads/products/${oldFilename}`, managedProductId);
+
+  const form = new FormData();
+  const image = createValidPng();
+
+  form.append("image", image, "nouvelle-image.png");
+
+  const response = await request(`/api/products/${managedProductId}/image`, {
+    method: "POST",
+    headers: {
+      "x-admin-token": adminToken,
+    },
+    body: form,
+  });
+
+  const data = await response.json();
+
+  assert.equal(response.status, 200);
+  assert.equal(data.success, true);
+  assert.equal(existsSync(oldPath), true);
+  assert.match(data.product.image, /^\/uploads\/products\/.+\.png$/);
+  assert.notEqual(data.product.image, `/uploads/products/${oldFilename}`);
+});
+
 test("POST /api/products/:id/image : refuser un produit inexistant", async () => {
   const form = new FormData();
 
-  const image = new Blob(
-    [new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10])],
-    { type: "image/png" }
-  );
+  const image = createValidPng();
 
   form.append("image", image, "inconnu.png");
 

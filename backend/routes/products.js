@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { v4 as uuidv4 } from "uuid";
 import multer from "multer";
+import { fileTypeFromFile } from "file-type";
 import path from "path";
 import fs from "fs";
 import { trace, SpanStatusCode } from "@opentelemetry/api";
@@ -42,7 +43,7 @@ const upload = multer({
     fileSize: 5 * 1024 * 1024, // 5 Mo maximum
   },
 
-  fileFilter: (_req, file, cb) => {
+    fileFilter: (_req, file, cb) => {
     const allowedTypes = [
       "image/jpeg",
       "image/png",
@@ -50,9 +51,12 @@ const upload = multer({
     ];
 
     if (!allowedTypes.includes(file.mimetype)) {
-      return cb(
-        new Error("Format image non autorisé. Utilisez JPG, PNG ou WEBP.")
+      const error = new Error(
+        "Format image non autorisé. Utilisez JPG, PNG ou WEBP."
       );
+
+      error.status = 400;
+      return cb(error);
     }
 
     cb(null, true);
@@ -97,7 +101,7 @@ router.get("/", (req, res) => {
   }
 
   if (sort === "price_asc") {
-    sql += " ORDER BY price ASC";
+  sql += " ORDER BY price ASC";
   } else if (sort === "price_desc") {
     sql += " ORDER BY price DESC";
   } else if (sort === "name") {
@@ -253,59 +257,118 @@ router.post(
   "/:id/image",
   requireAdmin,
   upload.single("image"),
-  (req, res) => {
-    const product = db
-      .prepare("SELECT * FROM products WHERE id = ?")
-      .get(req.params.id);
+  async (req, res, next) => {
+    let temporaryPath = req.file?.path;
+    let safePath;
 
-    if (!product) {
-      // Si le produit n'existe pas, supprimer le fichier
-      // qui vient éventuellement d'être envoyé.
-      if (req.file) {
-        fs.unlinkSync(req.file.path);
+    try {
+      // Vérifier d'abord que le produit existe.
+      const product = db
+        .prepare("SELECT * FROM products WHERE id = ?")
+        .get(req.params.id);
+
+      if (!product) {
+        if (temporaryPath) {
+          await fs.promises.unlink(temporaryPath);
+          temporaryPath = undefined;
+        }
+
+        return res.status(404).json({
+          error: "Produit introuvable",
+        });
       }
 
-      return res.status(404).json({
-        error: "Produit introuvable",
-      });
-    }
-
-    if (!req.file) {
-      return res.status(400).json({
-        error: "Aucune image envoyée",
-      });
-    }
-
-    /*
-     * Supprimer l'ancienne vraie image si elle existe.
-     *
-     * Les anciennes valeurs comme "bag", "coat", "shoes"
-     * ne sont pas des fichiers et seront donc ignorées.
-     */
-    if (product.image && product.image.startsWith("/uploads/products/")) {
-      const oldFilename = path.basename(product.image);
-      const oldPath = path.join(uploadDir, oldFilename);
-
-      if (fs.existsSync(oldPath)) {
-        fs.unlinkSync(oldPath);
+      if (!req.file) {
+        return res.status(400).json({
+          error: "Aucune image envoyée",
+        });
       }
+
+      // Détecter le véritable format à partir du contenu.
+      const detectedType = await fileTypeFromFile(temporaryPath);
+
+      const allowedFormats = {
+        "image/jpeg": "jpg",
+        "image/png": "png",
+        "image/webp": "webp",
+      };
+
+      if (
+        !detectedType ||
+        !allowedFormats[detectedType.mime] ||
+        detectedType.mime !== req.file.mimetype
+      ) {
+        await fs.promises.unlink(temporaryPath);
+        temporaryPath = undefined;
+
+        return res.status(400).json({
+          error:
+            "Fichier invalide. Seules les véritables images JPG, PNG et WEBP sont autorisées.",
+        });
+      }
+
+      // Générer un nom et une extension contrôlés par le serveur.
+      const safeFilename = `${uuidv4()}.${allowedFormats[detectedType.mime]}`;
+      safePath = path.join(uploadDir, safeFilename);
+
+      await fs.promises.rename(temporaryPath, safePath);
+      temporaryPath = undefined;
+
+      const imagePath = `/uploads/products/${safeFilename}`;
+
+      // Mettre à jour SQLite avant de supprimer l'ancienne image.
+      db.prepare(
+        "UPDATE products SET image = ? WHERE id = ?"
+      ).run(imagePath, req.params.id);
+
+      // Le fichier est maintenant référencé par SQLite : le conserver.
+      safePath = undefined;
+
+      const updatedRow = db
+        .prepare("SELECT * FROM products WHERE id = ?")
+        .get(req.params.id);
+           // Supprimer l'ancienne image seulement après la mise à jour.
+      if (
+        product.image &&
+        product.image.startsWith("/uploads/products/")
+      ) {
+        const oldFilename = path.basename(product.image);
+        const oldPath = path.join(uploadDir, oldFilename);
+
+        if (oldFilename !== safeFilename) {
+          try {
+            await fs.promises.unlink(oldPath);
+          } catch (cleanupError) {
+            console.warn(
+              "Impossible de supprimer l'ancienne image :",
+              cleanupError.message
+            );
+          }
+        }
+      }
+
+      return res.json({
+        success: true,
+        message: "Image du produit ajoutée avec succès",
+        product: rowToProduct(updatedRow),
+      });
+    } catch (error) {
+      // Nettoyer les fichiers créés en cas d'erreur.
+      for (const filePath of [temporaryPath, safePath]) {
+        if (filePath && fs.existsSync(filePath)) {
+          try {
+            await fs.promises.unlink(filePath);
+          } catch (cleanupError) {
+            console.error(
+              "Erreur nettoyage fichier upload :",
+              cleanupError.message
+            );
+          }
+        }
+      }
+
+      return next(error);
     }
-
-    const imagePath = `/uploads/products/${req.file.filename}`;
-
-    db.prepare(
-      "UPDATE products SET image = ? WHERE id = ?"
-    ).run(imagePath, req.params.id);
-
-    const updatedRow = db
-      .prepare("SELECT * FROM products WHERE id = ?")
-      .get(req.params.id);
-
-    res.json({
-      success: true,
-      message: "Image du produit ajoutée avec succès",
-      product: rowToProduct(updatedRow),
-    });
   }
 );
 
@@ -410,10 +473,10 @@ router.delete("/:id", requireAdmin, (req, res) => {
    GESTION DES ERREURS MULTER
    ========================================================= */
 
-router.use((err, _req, res, _next) => {
+router.use((err, _req, res, next) => {
   if (err instanceof multer.MulterError) {
     if (err.code === "LIMIT_FILE_SIZE") {
-      return res.status(400).json({
+      return res.status(413).json({
         error: "L'image est trop grande. Taille maximale : 5 Mo.",
       });
     }
@@ -423,11 +486,13 @@ router.use((err, _req, res, _next) => {
     });
   }
 
-  if (err) {
+  if (err.status === 400) {
     return res.status(400).json({
       error: err.message || "Erreur lors de l'upload de l'image",
     });
   }
+
+  return next(err);
 });
 
 export default router;
