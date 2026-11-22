@@ -23,6 +23,9 @@ RUN npm run build
 # ==========================================
 FROM nginx:alpine
 
+# Mettre à jour les paquets du système Alpine
+RUN apk upgrade --no-cache
+
 # Copier les fichiers compilés
 COPY --from=build /app/dist /usr/share/nginx/html
 

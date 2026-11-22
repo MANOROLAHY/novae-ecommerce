@@ -1,5 +1,10 @@
 # Image officielle Node.js 24
-FROM node:24-bookworm-slim
+FROM node:24-trixie-slim
+
+# Mettre à jour les paquets système de sécurité
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && rm -rf /var/lib/apt/lists/*
 
 # Dossier de travail
 WORKDIR /app
@@ -11,7 +16,10 @@ RUN npm install -g npm@12.2.2
 COPY backend/package*.json ./
 
 # Installer les dépendances de production
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev \
+    && npm uninstall -g npm \
+    && rm -rf /usr/local/lib/node_modules/corepack \
+    && rm -f /usr/local/bin/corepack
 
 # Copier le code backend
 COPY backend/ ./

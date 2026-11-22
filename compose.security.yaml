@@ -46,7 +46,7 @@ services:
       - novae-security-network
 
   frontend:
-    image: honoralien/novae-frontend:sha-93857fb5a518c6baa1b9478be22b41ff32907b8e
+    image: novae-frontend:security-update
     container_name: novae-security-frontend
     restart: unless-stopped
 
