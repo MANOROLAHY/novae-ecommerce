@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: novae-backend
+spec:
+  template:
+    spec:
+      containers:
+        - name: backend
+          env:
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: novae-staging-backend-secret
+                  key: ADMIN_PASSWORD

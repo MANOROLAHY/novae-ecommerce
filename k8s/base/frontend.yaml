@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: novae-frontend
+  namespace: novae
+  labels:
+    app: novae-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: novae-frontend
+  template:
+    metadata:
+      labels:
+        app: novae-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: honoralien/novae-frontend:sha-93857fb5a518c6baa1b9478be22b41ff32907b8e
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10

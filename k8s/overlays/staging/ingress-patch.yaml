@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: novae-ingress
+spec:
+  tls:
+    - hosts:
+        - novae-staging.local
+      secretName: novae-staging-tls
+  rules:
+    - host: novae-staging.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: novae-frontend
+                port:
+                  number: 80
