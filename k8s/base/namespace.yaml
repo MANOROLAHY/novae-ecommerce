@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: novae
+  labels:
+    app.kubernetes.io/name: novae
+    app.kubernetes.io/part-of: novae-ecommerce

@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: novae-backend
+  namespace: novae
+  labels:
+    app: novae-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: novae-backend
+  template:
+    metadata:
+      labels:
+        app: novae-backend
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+
+      containers:
+        - name: backend
+          image: honoralien/novae-backend:sha-402857e1b408e9a6656727e223b4c8621dc63924
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - name: http
+              containerPort: 4000
+              protocol: TCP
+
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "4000"
+            - name: SQLITE_DB_PATH
+              value: "/app/data/luxe.db"
+            - name: UPLOAD_DIR
+              value: "/app/uploads/products"
+            - name: SEED_FILE
+              value: "/app/seed/products.seed.json"
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: novae-backend-secret
+                  key: ADMIN_PASSWORD
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 20
+
+          volumeMounts:
+            - name: sqlite-data
+              mountPath: /app/data
+            - name: uploads-data
+              mountPath: /app/uploads
+
+      volumes:
+        - name: sqlite-data
+          persistentVolumeClaim:
+            claimName: novae-sqlite-pvc
+        - name: uploads-data
+          persistentVolumeClaim:
+            claimName: novae-uploads-pvc

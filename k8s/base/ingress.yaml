@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: novae-ingress
+  namespace: novae
+  labels:
+    app.kubernetes.io/name: novae
+spec:
+  ingressClassName: traefik
+
+  tls:
+    - hosts:
+        - novae.local
+      secretName: novae-tls
+
+  rules:
+    - host: novae.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: novae-frontend
+                port:
+                  number: 80

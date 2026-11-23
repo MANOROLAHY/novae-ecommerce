@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+images:
+  - name: honoralien/novae-backend
+    digest: sha256:c3de2b1c1f35d41f32d7dbeb3ecf8285ab44592585cb305b60d6eae81f17ec10
+
+  - name: honoralien/novae-frontend
+    digest: sha256:6ac6915521bf4abd398b36e28732abd84705c78497552f41efd23c0b5ca049c7
